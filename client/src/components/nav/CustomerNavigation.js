@@ -2,7 +2,7 @@ import React from 'react'
 import UserLogo from '../../assets/user.png'
 import { Figure,Button } from 'react-bootstrap'
 
-export default function () {
+export default function CustomerNavigation() {
     return (
         <div className="navigator">
             <Figure style={{marginLeft:'20px',marginTop:'40px'}}>
