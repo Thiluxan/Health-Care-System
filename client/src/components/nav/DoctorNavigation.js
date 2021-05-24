@@ -15,10 +15,10 @@ export default function DoctorNavigation() {
                         />
             </Figure>
             <div style={{marginLeft:'20px',marginTop:'40px'}}>
-                <Button href="#" variant="primary" size="lg" className="m-3 w-75">
+                <Button href="/doctor/home" variant="primary" size="lg" className="m-3 w-75">
                     Home
                 </Button><br/>
-                <Button href="#" variant="primary" size="lg" className="m-3 w-75">
+                <Button href="/doctor/appointments" variant="primary" size="lg" className="m-3 w-75">
                     Appointments
                 </Button>
             </div>

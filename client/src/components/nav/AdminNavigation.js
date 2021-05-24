@@ -15,19 +15,19 @@ export default function AdminNavigation() {
                         />
             </Figure>
             <div style={{marginLeft:'20px',marginTop:'40px'}}>
-                <Button href="#" variant="primary" size="lg" className="m-3 w-75">
+                <Button href="/admin/patients" variant="primary" size="lg" className="m-3 w-75">
                     Patients
                 </Button><br/>
-                <Button href="#" variant="primary" size="lg" className="m-3 w-75">
+                <Button href="/admin/doctors" variant="primary" size="lg" className="m-3 w-75">
                     Doctors
                 </Button><br/>
-                <Button href="#" variant="primary" size="lg" className="m-3 w-75">
+                <Button href="/admin/appointments" variant="primary" size="lg" className="m-3 w-75">
                     Appointments
                 </Button><br/>
-                <Button href="#" variant="primary" size="lg" className="m-3 w-75">
+                <Button href="/admin/doctorVisits" variant="primary" size="lg" className="m-3 w-75">
                     Doctor Visits
                 </Button>
-                <Button href="#" variant="primary" size="lg" className="m-3 w-75">
+                <Button href="/admin/admins" variant="primary" size="lg" className="m-3 w-75">
                     Admins
                 </Button>
             </div>

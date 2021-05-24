@@ -4,7 +4,7 @@ import { Figure,Button } from 'react-bootstrap'
 
 export default function CustomerNavigation() {
     return (
-        <div className="navigator">
+        <div className="navigator" style={{height:'830px'}}>
             <Figure style={{marginLeft:'20px',marginTop:'40px'}}>
                         <Figure.Image
                             src={UserLogo}
@@ -15,16 +15,16 @@ export default function CustomerNavigation() {
                         />
             </Figure>
             <div style={{marginLeft:'27px',marginTop:'50px'}}>
-                <Button href="#" variant="primary" size="lg" className="m-3 w-75">
+                <Button href="/customer/home" variant="primary" size="lg" className="m-3 w-75">
                     Home
                 </Button><br/>
-                <Button href="#" variant="primary" size="lg" className="m-3 w-75">
+                <Button href="/customer/bookings" variant="primary" size="lg" className="m-3 w-75">
                     Bookings
                 </Button><br/>
-                <Button href="#" variant="primary" size="lg" className="m-3 w-75">
+                <Button href="/customer/history" variant="primary" size="lg" className="m-3 w-75">
                     History
                 </Button><br/>
-                <Button href="#" variant="primary" size="lg" className="m-3 w-75">
+                <Button href="/customer/contact" variant="primary" size="lg" className="m-3 w-75">
                     Contact
                 </Button>
             </div>

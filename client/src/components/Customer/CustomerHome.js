@@ -18,47 +18,59 @@ export default function CustomerHome() {
                 <CustomerNavigation/>
             </div>
             <div style={{float:'right',marginRight:"100px"}}>
+                <div>
                 <LogoutHeader/>
-                <div style={{marginTop:'0px',display:'flex',flexWrap:'wrap'}}>
-                    <Card style={{ width: '18rem',marginRight:'80px' }}>
+                <div style={{marginTop:'0px'}}>
+                    <Card style={{ width: '54rem',marginLeft:'80px',marginTop:'15px'}}>
                         <Card.Body>
-                            <Card.Title>Card Title</Card.Title>
-                            <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
+                            <Card.Title>Dr. Doctor A</Card.Title>
+                            <Card.Subtitle className="mb-2 text-muted">Specialist Surgeon</Card.Subtitle>
                             <Card.Text>
-                            Some quick example text to build on the card title and make up the bulk of
-                            the card's content.
+                            25.05.2021 - 18:00
                             </Card.Text>
-                            <Card.Link href="#">Card Link</Card.Link>
-                            <Card.Link href="#">Another Link</Card.Link>
+                            <div style={{float:'right',marginTop:'-80px'}}>
+                            <Button href="/customer/addBooking">Book Now</Button>
+                            </div>
                         </Card.Body>
                     </Card>
-                    <Card style={{ width: '18rem',marginRight:'80px' }}>
+                    <Card style={{ width: '54rem',marginLeft:'80px',marginTop:'15px'}}>
                         <Card.Body>
-                            <Card.Title>Card Title</Card.Title>
-                            <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
+                            <Card.Title>Dr. Doctor A</Card.Title>
+                            <Card.Subtitle className="mb-2 text-muted">Specialist Surgeon</Card.Subtitle>
                             <Card.Text>
-                            Some quick example text to build on the card title and make up the bulk of
-                            the card's content.
+                            25.05.2021 - 18:00
                             </Card.Text>
-                            <Card.Link href="#">Card Link</Card.Link>
-                            <Card.Link href="#">Another Link</Card.Link>
+                            <div style={{float:'right',marginTop:'-80px'}}>
+                            <Button href="#">Book Now</Button>
+                            </div>
                         </Card.Body>
                     </Card>
-                    <Card style={{ width: '18rem',marginRight:'80px' }}>
+                    <Card style={{ width: '54rem',marginLeft:'80px',marginTop:'15px'}}>
                         <Card.Body>
-                            <Card.Title>Card Title</Card.Title>
-                            <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
+                            <Card.Title>Dr. Doctor A</Card.Title>
+                            <Card.Subtitle className="mb-2 text-muted">Specialist Surgeon</Card.Subtitle>
                             <Card.Text>
-                            Some quick example text to build on the card title and make up the bulk of
-                            the card's content.
+                            25.05.2021 - 18:00
                             </Card.Text>
-                            <Card.Link href="#">Card Link</Card.Link>
-                            <Card.Link href="#">Another Link</Card.Link>
+                            <div style={{float:'right',marginTop:'-80px'}}>
+                            <Button href="#">Book Now</Button>
+                            </div>
                         </Card.Body>
                     </Card>
-                                      
-                    
-                </div>   
+                    <Card style={{ width: '54rem',marginLeft:'80px',marginTop:'15px'}}>
+                        <Card.Body>
+                            <Card.Title>Dr. Doctor A</Card.Title>
+                            <Card.Subtitle className="mb-2 text-muted">Specialist Surgeon</Card.Subtitle>
+                            <Card.Text>
+                            25.05.2021 - 18:00
+                            </Card.Text>
+                            <div style={{float:'right',marginTop:'-80px'}}>
+                            <Button href="#">Book Now</Button>
+                            </div>
+                        </Card.Body>
+                    </Card>
+                </div>  
+                </div> 
             </div>
         </>
     )
