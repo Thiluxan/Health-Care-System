@@ -2,8 +2,11 @@ import React from 'react'
 import DoctorNavigation from '../nav/DoctorNavigation'
 import LogoutHeader from '../nav/LogoutHeader'
 import { Table,Button} from 'react-bootstrap'
+import authService from '../../authentication/auth-service'
 
 export default function Appointments() {
+    const currentUser = authService.getCurrentUser()
+    
     return (
         <>
             <div style={{float:'left'}}>

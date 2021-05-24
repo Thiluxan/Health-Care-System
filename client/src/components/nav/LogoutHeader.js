@@ -1,13 +1,15 @@
 import React from 'react'
 import { Navbar,Button } from 'react-bootstrap'
+import authService from '../../authentication/auth-service'
 
 export default function LogoutHeader() {
     const handleLogout = () => {
-        console.log("Logout")
+        authService.logout()
+        window.location.replace("/")
     }
     return (
         <Navbar style={{padding:'25px'}}>
-            <Navbar.Brand href="/home" style={{fontFamily:'cursive',fontSize:'35px',marginRight:'600px'}}>Alpha Health Care</Navbar.Brand>
+            <Navbar.Brand href="#" style={{fontFamily:'cursive',fontSize:'35px',marginRight:'600px'}}>Alpha Health Care</Navbar.Brand>
                 <Navbar.Toggle />
                 <Navbar.Collapse className="justify-content-end" style={{fontFamily:'monospace',fontSize:'20px'}}>
                     <Navbar.Text className="mr-5">

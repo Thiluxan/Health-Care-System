@@ -2,8 +2,11 @@ import React,{useState} from 'react'
 import LogoutHeader from '../nav/LogoutHeader'
 import { Form,Button} from 'react-bootstrap'
 import CustomerNavigation from '../nav/CustomerNavigation'
+import authService from '../../authentication/auth-service'
 
 export default function Contact() {
+    const currentUser = authService.getCurrentUser()
+    
     const[name,setName] = useState('')
     const[email,setEmail] = useState('')
     const[query,setQuery] = useState('')

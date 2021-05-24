@@ -2,14 +2,29 @@ import React,{useState} from 'react'
 import TopNavigation from '../nav/TopNavigation'
 import HealthHome from '../../assets/health_home.png'
 import {Figure,Form,Button} from 'react-bootstrap'
+import authService from '../../authentication/auth-service'
 
 export default function Login() {
+    const currentUser = authService.getCurrentUser()
+    if(currentUser != null){
+        window.location.replace('/loading')
+    }
     const[email,setEmail] = useState('')
     const[password,setPassword] = useState('')
-    
+    const[message,setMessage] = useState('')
+
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log("Form submit")
+        authService.login(email,password)
+        .then(response => {
+            window.location.replace("/loading")
+            setEmail('')
+            setPassword('')
+        })
+        .catch(err => {
+            console.log(err)
+            setMessage('Invalid Credentials')
+        })
     }
 
     return (
@@ -31,6 +46,7 @@ export default function Login() {
                     
                     <Form onSubmit={handleSubmit} className="form">
                         <h2 style={{textAlign:'center',marginBottom:'15px'}}>Login Here</h2>
+                        <span style={{marginTop:'-25px',color:'red',textAlign:'center',marginLeft:'90px'}}>{message}</span>
                         <Form.Group controlId="formBasicEmail" className="formGroups">
                             <Form.Label column="lg" lg={2}>Email </Form.Label>
                             <Form.Control 

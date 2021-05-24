@@ -2,8 +2,11 @@ import React from 'react'
 import LogoutHeader from '../nav/LogoutHeader'
 import { Table} from 'react-bootstrap'
 import CustomerNavigation from '../nav/CustomerNavigation'
+import authService from '../../authentication/auth-service'
 
 export default function History() {
+    const currentUser = authService.getCurrentUser()
+    
     return (
         <>
             <div style={{float:'left'}}>

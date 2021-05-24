@@ -2,8 +2,11 @@ import React from 'react'
 import AdminNavigation from '../nav/AdminNavigation'
 import LogoutHeader from '../nav/LogoutHeader'
 import {Table,Button} from 'react-bootstrap'
+import authService from '../../authentication/auth-service'
 
 export default function DoctorVisits() {
+    const currentUser = authService.getCurrentUser()
+   
     return (
         <>
             <div style={{float:'left'}}>

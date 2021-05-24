@@ -2,8 +2,11 @@ import React,{useState} from 'react'
 import AdminNavigation from '../nav/AdminNavigation'
 import LogoutHeader from '../nav/LogoutHeader'
 import {Form,Table,Button} from 'react-bootstrap'
+import authService from '../../authentication/auth-service'
 
 export default function Appointments() {
+    const currentUser = authService.getCurrentUser()
+    
     const[receipt,setReceipt] = useState('')
     const[customer,setCustomer] = useState('')
     const[date,setDate] = useState('')

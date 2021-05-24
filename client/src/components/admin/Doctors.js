@@ -2,8 +2,11 @@ import React,{useState} from 'react'
 import AdminNavigation from '../nav/AdminNavigation'
 import LogoutHeader from '../nav/LogoutHeader'
 import {Form,Table,Button} from 'react-bootstrap'
+import authService from '../../authentication/auth-service'
 
 export default function Doctors() {
+    const currentUser = authService.getCurrentUser()
+    
     const[name,setName] = useState('')
     const[email,setEmail] = useState('')
     const[phone,setPhone] = useState('')

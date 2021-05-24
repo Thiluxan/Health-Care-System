@@ -14,6 +14,10 @@ import Customers from './components/admin/Customers';
 import Appointments from './components/admin/Appointments';
 import DoctorAppointments from './components/doctor/Appointments'
 import Home from './components/pages/Home';
+import Loading from './components/pages/Loading';
+import DoctorRoute from './authentication/DoctorRoute'
+import AdminRoute from './authentication/AdminRoute'
+import CustomerRoute from './authentication/CustomerRoute'
 
 import {BrowserRouter as Router, Switch,Route} from 'react-router-dom'
 
@@ -25,18 +29,19 @@ function App() {
           <Route exact path="/" component={Home}/>
           <Route exact path="/login" component={Login}/>
           <Route exact path="/signup" component={SignUp}/>
-          <Route exact path="/doctor/home" component={DoctorHome}/>
-          <Route exact path="/doctor/appointments" component={DoctorAppointments}/>
-          <Route exact path="/customer/home" component={CustomerHome}/>
-          <Route exact path="/customer/history" component={History}/>
-          <Route exact path="/customer/contact" component={Contact}/>
-          <Route exact path="/customer/bookings" component={Bookings}/>
-          <Route exact path="/customer/addBooking" component={AddBooking}/>
-          <Route exact path="/admin/appointments" component={Appointments}/>
-          <Route exact path="/admin/doctorVisits" component={DoctorVisits}/>
-          <Route exact path="/admin/admins" component={Admins}/>
-          <Route exact path="/admin/patients" component={Customers}/>
-          <Route exact path="/admin/doctors" component={Doctors}/>
+          <DoctorRoute exact path="/doctor/home" component={DoctorHome}/>
+          <DoctorRoute exact path="/doctor/appointments" component={DoctorAppointments}/>
+          <CustomerRoute exact path="/customer/home" component={CustomerHome}/>
+          <CustomerRoute exact path="/customer/history" component={History}/>
+          <CustomerRoute exact path="/customer/contact" component={Contact}/>
+          <CustomerRoute exact path="/customer/bookings" component={Bookings}/>
+          <CustomerRoute exact path="/customer/addBooking" component={AddBooking}/>
+          <AdminRoute exact path="/admin/appointments" component={Appointments}/>
+          <AdminRoute exact path="/admin/doctorVisits" component={DoctorVisits}/>
+          <AdminRoute exact path="/admin/admins" component={Admins}/>
+          <AdminRoute exact path="/admin/patients" component={Customers}/>
+          <AdminRoute exact path="/admin/doctors" component={Doctors}/>
+          <Route exact path="/loading" component={Loading}/>
         </Switch>
       </Router>
     </div>

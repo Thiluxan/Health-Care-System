@@ -3,16 +3,36 @@ import TopNavigation from '../nav/TopNavigation'
 import HealthHome from '../../assets/health_home.png'
 import {Figure,Form,Button} from 'react-bootstrap'
 
+import authService from '../../authentication/auth-service'
+
 export default function SignUp() {
+    const currentUser = authService.getCurrentUser()
+    if(currentUser != null){
+        window.location.replace('/loading')
+    }
     const[email,setEmail] = useState('')
     const[password,setPassword] = useState('')
     const[name,setName] = useState('')
     const[phone,setPhone] = useState('')
-    
+
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log("Form submit")
+        authService.register(name,email,password,'CUSTOMER',phone,'')
+        .then(response => {
+            console.log(response)
+            alert("Registered successfully")
+            window.location.replace('/login')
+        })
+        .catch(err =>{ 
+            console.log(err)
+            alert("Error occurred")
+        })
+        setEmail('')
+        setPassword('')
+        setName('')
+        setPhone('')
     }
+
     return (
         <>
             <TopNavigation/>

@@ -2,8 +2,11 @@ import React,{useState} from 'react'
 import DoctorNavigation from '../nav/DoctorNavigation'
 import LogoutHeader from '../nav/LogoutHeader'
 import { Table,Button,Form} from 'react-bootstrap'
+import authService from '../../authentication/auth-service'
 
 export default function DoctorHome() {
+    const currentUser = authService.getCurrentUser()
+   
     const[date,setDate] = useState('')
     const[time,setTime] = useState('')
     const[fees,setFees] = useState()
