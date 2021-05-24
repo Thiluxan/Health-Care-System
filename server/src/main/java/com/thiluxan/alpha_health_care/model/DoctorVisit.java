@@ -11,6 +11,7 @@ public class DoctorVisit {
 
     @Id
     private int id;
+    private String email;
     private String date;
     private String time;
     private int fees;
@@ -21,8 +22,9 @@ public class DoctorVisit {
     public DoctorVisit() {
     }
 
-    public DoctorVisit(int id, String date, String time, int fees, int totalPatients, int booking, String status) {
+    public DoctorVisit(int id, String email, String date, String time, int fees, int totalPatients, int booking, String status) {
         this.id = id;
+        this.email = email;
         this.date = date;
         this.time = time;
         this.fees = fees;
@@ -31,7 +33,8 @@ public class DoctorVisit {
         this.status = status;
     }
 
-    public DoctorVisit(String date, String time, int fees, int totalPatients, int booking, String status) {
+    public DoctorVisit(String email,String date, String time, int fees, int totalPatients, int booking, String status) {
+        this.email = email;
         this.date = date;
         this.time = time;
         this.fees = fees;
@@ -46,6 +49,14 @@ public class DoctorVisit {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getDate() {
