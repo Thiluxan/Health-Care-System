@@ -33,4 +33,8 @@ public class DoctorVisitService {
     public void deleteDoctorVisit(int id){
         doctorVisitRepo.deleteById(id);
     }
+
+    public List<DoctorVisit> getDoctorVisitByEmail(String email){
+        return doctorVisitRepo.findAllByEmailOrderByIdDesc(email);
+    }
 }

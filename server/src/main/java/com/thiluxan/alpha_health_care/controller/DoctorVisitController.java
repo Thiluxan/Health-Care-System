@@ -38,4 +38,9 @@ public class DoctorVisitController {
     public void deleteDoctorVisit(@PathVariable int id){
         doctorVisitService.deleteDoctorVisit(id);
     }
+
+    @GetMapping("/doctorVisits/doctor/{email}")
+    public List<DoctorVisit> getDoctorVisitByEmail(@PathVariable String email){
+        return doctorVisitService.getDoctorVisitByEmail(email);
+    }
 }

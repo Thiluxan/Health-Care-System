@@ -1,8 +1,10 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import DoctorNavigation from '../nav/DoctorNavigation'
 import LogoutHeader from '../nav/LogoutHeader'
 import { Table,Button,Form} from 'react-bootstrap'
 import authService from '../../authentication/auth-service'
+import DoctorService from '../../service/DoctorService'
+import ReactPaginate from 'react-paginate'
 
 export default function DoctorHome() {
     const currentUser = authService.getCurrentUser()
@@ -11,11 +13,64 @@ export default function DoctorHome() {
     const[time,setTime] = useState('')
     const[fees,setFees] = useState()
     const[patients,setPatients] = useState()
+    const[doctorVisits,setDoctorVisits] = useState([])
+    const[currentPage,setCurrentPage] = useState(0)
+
+    const PER_PAGE = 7;
+    
+    useEffect(() => {
+        DoctorService.fetchOneDoctorVisits(currentUser.email)
+        .then(response => {
+            setDoctorVisits(response.data)
+            console.log(doctorVisits)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    },[])
+
+    const handlePageClick =({ selected: selectedPage }) => {
+        setCurrentPage(selectedPage);
+    }
+    
+    const offset = currentPage * PER_PAGE;
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log("Visit created")
+        const newDoctorVisit = {
+            email:currentUser.email,
+            date,
+            time,
+            fees,
+            totalPatients:patients,
+            bookings:0,
+            status:'OPEN'
+        }
+        DoctorService.addDoctorVisit(newDoctorVisit)
+        .then(response => {
+            alert('DoctorVisit added')
+            setDate('')
+            setTime('')
+            setFees('')
+            setPatients('')
+            window.location.replace('/doctor/appointments')
+        })
+        .catch(err => {
+            console.log(err)
+            alert('An error occurred')
+        })
     }
+
+    const currentPageData = doctorVisits
+                            .slice(offset,offset+PER_PAGE)
+                            .map(doctorVisit => (
+                                <tr key={doctorVisit.id}>
+                                    <td>{doctorVisit.date}</td>
+                                    <td>{doctorVisit.fees}</td>
+                                    <td>{doctorVisit.totalPatients}</td>
+                                </tr>
+                            ));
+    const pageCount = Math.ceil(doctorVisits.length / PER_PAGE);
     return (
         <>
             <div style={{float:'left'}}>
@@ -83,23 +138,20 @@ export default function DoctorHome() {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>01.01.2021</td>
-                                    <td>LKR 1500</td>
-                                    <td>50</td>
-                                </tr>
-                                <tr>
-                                    <td>01.01.2021</td>
-                                    <td>LKR 1500</td>
-                                    <td>50</td>
-                                </tr>
-                                <tr>
-                                    <td>01.01.2021</td>
-                                    <td>LKR 1500</td>
-                                    <td>50</td>
-                                </tr>
+                                {currentPageData}
                             </tbody>
                         </Table>
+                        <ReactPaginate
+                                previousLabel={"← Previous"}
+                                nextLabel={"Next →"}
+                                pageCount={pageCount}
+                                onPageChange={handlePageClick}
+                                containerClassName={"pagination"}
+                                previousLinkClassName={"pagination__link"}
+                                nextLinkClassName={"pagination__link"}
+                                disabledClassName={"pagination__link--disabled"}
+                                activeClassName={"pagination__link--active"}
+                        />
                     </div>
                 </div>
             </div>

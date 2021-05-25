@@ -6,7 +6,7 @@ import authService from '../../authentication/auth-service'
 
 export default function DoctorVisits() {
     const currentUser = authService.getCurrentUser()
-   
+   console.log(currentUser.jwtToken)
     return (
         <>
             <div style={{float:'left'}}>
