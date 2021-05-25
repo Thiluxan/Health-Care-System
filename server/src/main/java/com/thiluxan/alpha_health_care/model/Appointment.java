@@ -9,7 +9,7 @@ import javax.persistence.Table;
 public class Appointment {
 
     @Id
-    private int receipt;
+    private int id;
     private String name;
     private String email;
     private String doctor;
@@ -22,8 +22,8 @@ public class Appointment {
     public Appointment() {
     }
 
-    public Appointment(int receipt, String name, String email, String doctor, int fees, int phone, String date, String time, String status) {
-        this.receipt = receipt;
+    public Appointment(int id, String name, String email, String doctor, int fees, int phone, String date, String time, String status) {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.doctor = doctor;
@@ -45,12 +45,12 @@ public class Appointment {
         this.status = status;
     }
 
-    public int getReceipt() {
-        return receipt;
+    public int getId() {
+        return id;
     }
 
-    public void setReceipt(int receipt) {
-        this.receipt = receipt;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

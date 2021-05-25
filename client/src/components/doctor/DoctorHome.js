@@ -39,6 +39,8 @@ export default function DoctorHome() {
         e.preventDefault()
         const newDoctorVisit = {
             email:currentUser.email,
+            name:currentUser.name,
+            domain:currentUser.domain,
             date,
             time,
             fees,

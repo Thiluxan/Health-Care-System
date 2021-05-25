@@ -1,5 +1,6 @@
 package com.thiluxan.alpha_health_care.service;
 
+import com.thiluxan.alpha_health_care.model.PublicUser;
 import com.thiluxan.alpha_health_care.model.User;
 import com.thiluxan.alpha_health_care.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +39,18 @@ public class UserService implements UserDetailsService {
 
     public User getUser(String email){
         return userRepo.findUserByEmail(email);
+    }
+
+    public void deleteUser(String email){
+        userRepo.deleteByEmail(email);
+    }
+
+    public void updateUser(PublicUser publicUser){
+        User user = userRepo.findUserByEmail(publicUser.getEmail());
+        user.setName(publicUser.getName());
+        user.setEmail(publicUser.getEmail());
+        user.setPhone(publicUser.getPhone());
+        user.setDomain(publicUser.getDomain());
+        userRepo.save(user);
     }
 }

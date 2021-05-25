@@ -1,21 +1,47 @@
-import React,{useState} from 'react'
+import React,{useState,useLocation} from 'react'
 import LogoutHeader from '../nav/LogoutHeader'
 import { Form,Button} from 'react-bootstrap'
 import CustomerNavigation from '../nav/CustomerNavigation'
 import authService from '../../authentication/auth-service'
+import CustomerService from '../../service/CustomerService'
 
-export default function AddBooking() {
+export default function AddBooking(props) {
     const currentUser = authService.getCurrentUser()
+   
+    const doctorVisit = props.location.state.doctorVisit
     
     const[name,setName] = useState('')
     const[email,setEmail] = useState('')
-    const[date,setDate] = useState('')
-    const[time,setTime] = useState('')
-    const[fees,setFees] = useState()
+    const[date,setDate] = useState(doctorVisit.date)
+    const[phone,setPhone] = useState('')
+    const[fees,setFees] = useState(doctorVisit.fees)
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log("Visit created")
+        const newAppointment = {
+            name,
+            email,
+            doctor:doctorVisit.name,
+            fees,
+            phone,
+            date:doctorVisit.date,
+            time:doctorVisit.time,
+            status:'OPEN'
+        }
+        CustomerService.addAppointment(newAppointment)
+        .then(response => {
+            alert('Booking added')
+            setDate('')
+            setFees('')
+            setName('')
+            setEmail('')
+            setPhone('')
+            window.location.replace('/customer/bookings')
+        })
+        .catch(err => {
+            console.log(err)
+            alert('An error occurred')
+        })
     }
     return (
         <>
@@ -52,17 +78,16 @@ export default function AddBooking() {
                                 type="text" 
                                 placeholder="Date" 
                                 value={date}
-                                onChange = {(e) => setDate(e.target.value)}
-                                required/>
+                                readOnly/>
                         </Form.Group>
 
-                        <Form.Group controlId="formBasicTime" className="formGroups">
+                        <Form.Group controlId="formBasicPhone" className="formGroups">
                             <Form.Control 
                                 size="lg"
                                 type="text" 
-                                placeholder="Time" 
-                                value={time}
-                                onChange = {(e) => setTime(e.target.value)}
+                                placeholder="Phone" 
+                                value={phone}
+                                onChange = {(e) => setPhone(e.target.value)}
                                 required/>
                         </Form.Group>
 
@@ -72,8 +97,7 @@ export default function AddBooking() {
                                 type="text" 
                                 placeholder="Fees" 
                                 value={fees}
-                                onChange = {(e) => setFees(e.target.value)}
-                                required/>
+                                readOnly/>
                         </Form.Group>
 
                         <Button variant="info" type="submit" size="lg" style={{width:'300px',marginTop:'10px'}}>

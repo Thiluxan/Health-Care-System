@@ -12,6 +12,8 @@ public class DoctorVisit {
     @Id
     private int id;
     private String email;
+    private String name;
+    private String domain;
     private String date;
     private String time;
     private int fees;
@@ -22,9 +24,10 @@ public class DoctorVisit {
     public DoctorVisit() {
     }
 
-    public DoctorVisit(int id, String email, String date, String time, int fees, int totalPatients, int booking, String status) {
-        this.id = id;
+    public DoctorVisit(String email, String name, String domain, String date, String time, int fees, int totalPatients, int booking, String status) {
         this.email = email;
+        this.name = name;
+        this.domain = domain;
         this.date = date;
         this.time = time;
         this.fees = fees;
@@ -33,8 +36,11 @@ public class DoctorVisit {
         this.status = status;
     }
 
-    public DoctorVisit(String email,String date, String time, int fees, int totalPatients, int booking, String status) {
+    public DoctorVisit(int id, String email, String name, String domain, String date, String time, int fees, int totalPatients, int booking, String status) {
+        this.id = id;
         this.email = email;
+        this.name = name;
+        this.domain = domain;
         this.date = date;
         this.time = time;
         this.fees = fees;
@@ -57,6 +63,22 @@ public class DoctorVisit {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
     }
 
     public String getDate() {

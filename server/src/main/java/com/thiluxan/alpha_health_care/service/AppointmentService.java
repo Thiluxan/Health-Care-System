@@ -17,20 +17,24 @@ public class AppointmentService {
         return appointmentRepo.findAll();
     }
 
-    public Appointment getAppointment(int receipt){
-        return appointmentRepo.findAppointmentByReceipt(receipt);
+    public Appointment getAppointment(int id){
+        return appointmentRepo.findById(id).get();
     }
 
     public void addAppointment(Appointment appointment){
         appointmentRepo.save(appointment);
     }
 
-    public void updateAppointment(int receipt, Appointment appointment){
-        appointment.setReceipt(receipt);
+    public void updateAppointment(int id, Appointment appointment){
+        appointment.setId(id);
         appointmentRepo.save(appointment);
     }
 
-    public void deleteAppointment(int receipt){
-        appointmentRepo.deleteAppointmentByReceipt(receipt);
+    public void deleteAppointment(int id){
+        appointmentRepo.deleteById(id);
+    }
+
+    public List<Appointment> getAppointmentsByEmail(String email){
+        return appointmentRepo.findAllByEmailOrderByIdDesc(email);
     }
 }

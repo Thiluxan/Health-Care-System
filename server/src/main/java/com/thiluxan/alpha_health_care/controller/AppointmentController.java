@@ -18,9 +18,9 @@ public class AppointmentController {
         return appointmentService.getAppointments();
     }
 
-    @GetMapping("/appointments/{receipt}")
-    public Appointment appointment(@PathVariable int receipt){
-        return appointmentService.getAppointment(receipt);
+    @GetMapping("/appointments/{id}")
+    public Appointment appointment(@PathVariable int id){
+        return appointmentService.getAppointment(id);
     }
 
     @PostMapping("/appointments")
@@ -28,13 +28,18 @@ public class AppointmentController {
         appointmentService.addAppointment(appointment);
     }
 
-    @PutMapping("/appointments/{receipt}")
-    public void updateAppointment(@RequestBody Appointment appointment,@PathVariable int receipt){
-        appointmentService.updateAppointment(receipt,appointment);
+    @PutMapping("/appointments/{id}")
+    public void updateAppointment(@RequestBody Appointment appointment,@PathVariable int id){
+        appointmentService.updateAppointment(id,appointment);
     }
 
-    @DeleteMapping("/appointments/{receipt}")
-    public void deleteAppointment(@PathVariable int receipt){
-        appointmentService.deleteAppointment(receipt);
+    @DeleteMapping("/appointments/{id}")
+    public void deleteAppointment(@PathVariable int id){
+        appointmentService.deleteAppointment(id);
+    }
+
+    @GetMapping("/appointments/booking/{email}")
+    public List<Appointment> getAppointmentsByEmail(@PathVariable String email){
+        return appointmentService.getAppointmentsByEmail(email);
     }
 }

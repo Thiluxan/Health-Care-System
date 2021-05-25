@@ -2,6 +2,7 @@ package com.thiluxan.alpha_health_care.controller;
 
 import com.thiluxan.alpha_health_care.configuration.JwtTokenUtil;
 import com.thiluxan.alpha_health_care.model.JwtRequest;
+import com.thiluxan.alpha_health_care.model.PublicUser;
 import com.thiluxan.alpha_health_care.model.ResponseUser;
 import com.thiluxan.alpha_health_care.model.User;
 import com.thiluxan.alpha_health_care.service.UserService;
@@ -47,6 +48,22 @@ public class UserController {
     @PostMapping("/register")
     public void register(@RequestBody User user){
         userService.saveUser(user);
+    }
+
+    @GetMapping("/users/{email}")
+    public PublicUser getUser(@PathVariable String email){
+        User user = userService.getUser(email);
+        return new PublicUser(user.getName(),user.getEmail(),user.getPhone(),user.getDomain());
+    }
+
+    @PutMapping("/users/{email}")
+    public void updateUser(@RequestBody PublicUser publicUser,@PathVariable String email){
+        userService.updateUser(publicUser);
+    }
+
+    @DeleteMapping("/users/{email}")
+    public void deleteUser(@PathVariable String email){
+        userService.deleteUser(email);
     }
 
     private void authenticate(String email, String password) throws Exception {

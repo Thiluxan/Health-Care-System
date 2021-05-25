@@ -1,11 +1,75 @@
-import React from 'react'
+import React, { useState,useEffect } from 'react'
 import LogoutHeader from '../nav/LogoutHeader'
 import { Table,Button} from 'react-bootstrap'
 import CustomerNavigation from '../nav/CustomerNavigation'
 import authService from '../../authentication/auth-service'
+import ReactPaginate from "react-paginate";
+import CustomerService from '../../service/CustomerService'
+import { confirmAlert } from 'react-confirm-alert'; 
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 export default function Bookings() {
     const currentUser = authService.getCurrentUser()
+    const [bookings,setBookings] = useState([])
+    const[currentPage,setCurrentPage] = useState(0)
+
+    const PER_PAGE = 5;
+
+    useEffect(() => {
+        CustomerService.fetchAppointmentsByEmail(currentUser.email)
+        .then(response => {
+            setBookings(response.data)
+        })
+        .catch(err => console.log(err))
+    },[])
+
+    const handlePageClick =({ selected: selectedPage }) => {
+        setCurrentPage(selectedPage);
+    }
+    
+    const offset = currentPage * PER_PAGE;
+
+    const cancelBooking = (id) => {
+        confirmAlert({
+            title:'Customer Booking',
+            message:'Are you sure want to cancel booking',
+            buttons: [
+                {
+                  label: 'Yes',
+                  onClick: () => {
+                        CustomerService.deleteAppointment(id)
+                        .then(response => {
+                            alert('Canceled successfully')
+                            window.location.replace("/customer/bookings")
+                        })
+                        .catch(err => {
+                            console.log(err)
+                            alert('error occurred')
+                        })
+                  }
+                },
+                {
+                  label: 'No',
+                  onClick: () => {
+                      window.location.replace("/customer/bookings")
+                  }
+                }
+              ]
+        })
+    }
+
+    const currentPageData = bookings.filter(booking => booking.status === 'OPEN')
+                                    .map(appointment => (
+                                        <tr key={appointment.id}>
+                                            <td>{appointment.id}</td>
+                                            <td>{appointment.doctor}</td>
+                                            <td>{appointment.date}</td>
+                                            <td>{appointment.time}</td>
+                                            <td>{appointment.fees}</td>
+                                            <td><Button variant="danger" onClick={() => cancelBooking(appointment.id)}>Cancel</Button></td>
+                                        </tr>
+                                    ))
+    const pageCount = Math.ceil(bookings.length / PER_PAGE);
     
     return (
         <>
@@ -28,33 +92,20 @@ export default function Bookings() {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>0001</td>
-                                <td>Dr.Doctor A</td>
-                                <td>01.01.2021</td>
-                                <td>00.00</td>
-                                <td>LKR 1500</td>
-                                <td><Button variant="danger">Cancel</Button></td>
-                            </tr>
-                            <tr>
-                                <td>0001</td>
-                                <td>Dr.Doctor A</td>
-                                <td>01.01.2021</td>
-                                <td>00.00</td>
-                                <td>LKR 1500</td>
-                                <td><Button variant="danger">Cancel</Button></td>
-                            </tr>
-                            <tr>
-                                <td>0001</td>
-                                <td>Dr.Doctor A</td>
-                                <td>01.01.2021</td>
-                                <td>00.00</td>
-                                <td>LKR 1500</td>
-                                <td><Button variant="danger">Cancel</Button></td>
-                            </tr>
-                            
+                              {currentPageData}                      
                         </tbody>
                         </Table>
+                        <ReactPaginate
+                            previousLabel={"← Previous"}
+                            nextLabel={"Next →"}
+                            pageCount={pageCount}
+                            onPageChange={handlePageClick}
+                            containerClassName={"pagination"}
+                            previousLinkClassName={"pagination__link"}
+                            nextLinkClassName={"pagination__link"}
+                            disabledClassName={"pagination__link--disabled"}
+                            activeClassName={"pagination__link--active"}
+                        />
                     </div>
             </div>
         </>
