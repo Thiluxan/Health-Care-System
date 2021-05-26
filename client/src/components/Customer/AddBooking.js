@@ -4,6 +4,7 @@ import { Form,Button} from 'react-bootstrap'
 import CustomerNavigation from '../nav/CustomerNavigation'
 import authService from '../../authentication/auth-service'
 import CustomerService from '../../service/CustomerService'
+import DoctorService from '../../service/DoctorService'
 
 export default function AddBooking(props) {
     const currentUser = authService.getCurrentUser()
@@ -30,13 +31,31 @@ export default function AddBooking(props) {
         }
         CustomerService.addAppointment(newAppointment)
         .then(response => {
-            alert('Booking added')
-            setDate('')
-            setFees('')
-            setName('')
-            setEmail('')
-            setPhone('')
-            window.location.replace('/customer/bookings')
+            const updatedDoctorVisit = {
+                email:doctorVisit.email,
+                name:doctorVisit.name,
+                domain:doctorVisit.domain,
+                date:doctorVisit.date,
+                time:doctorVisit.time,
+                fees:doctorVisit.fees,
+                totalPatients:doctorVisit.totalPatients,
+                booking:doctorVisit.booking + 1,
+                status: doctorVisit.booking + 1 < doctorVisit.totalPatients ? 'OPEN' : 'CLOSED'
+            }
+            DoctorService.updateDoctorVisit(doctorVisit.id,updatedDoctorVisit)
+            .then(res => {
+                alert('Booking added')
+                setDate('')
+                setFees('')
+                setName('')
+                setEmail('')
+                setPhone('')
+                window.location.replace('/customer/bookings')
+            })
+            .catch(error => {
+                console.log(error)
+                alert('An error occurred')
+            })
         })
         .catch(err => {
             console.log(err)
