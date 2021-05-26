@@ -65,7 +65,7 @@ export default function CustomerHome() {
     return (
         <>
             <div style={{float:'left'}}>
-                <CustomerNavigation/>
+                <CustomerNavigation name={currentUser.name}/>
             </div>
             <div style={{float:'right',marginRight:"100px"}}>
                 <div>

@@ -41,7 +41,7 @@ export default function History() {
     return (
         <>
             <div style={{float:'left'}}>
-                <CustomerNavigation/>
+                <CustomerNavigation name={currentUser.name}/>
             </div>
             <div style={{float:'right',marginRight:"100px"}}>
                 <LogoutHeader/>

@@ -131,7 +131,7 @@ export default function Appointments() {
     return (
         <>
             <div style={{float:'left'}}>
-                <AdminNavigation/>
+                <AdminNavigation name={currentUser.name}/>
             </div>
             <div style={{float:'right',marginRight:"100px"}}>
                 <LogoutHeader/>

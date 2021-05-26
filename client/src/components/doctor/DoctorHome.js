@@ -76,7 +76,7 @@ export default function DoctorHome() {
     return (
         <>
             <div style={{float:'left'}}>
-                <DoctorNavigation/>
+                <DoctorNavigation name={currentUser.name}/>
             </div>
             <div style={{float:'right',marginRight:"100px"}}>
                 <LogoutHeader/>

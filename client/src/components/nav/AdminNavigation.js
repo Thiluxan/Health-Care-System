@@ -2,7 +2,7 @@ import React from 'react'
 import AdminLogo from '../../assets/admin1.png'
 import { Figure,Button } from 'react-bootstrap'
 
-export default function AdminNavigation() {
+export default function AdminNavigation({name}) {
     return (
         <div className="navigator">
             <Figure style={{marginLeft:'30px',marginTop:'50px'}}>
@@ -14,7 +14,8 @@ export default function AdminNavigation() {
                             className="p-10"
                         />
             </Figure>
-            <div style={{marginLeft:'20px',marginTop:'40px'}}>
+            <h3 style={{marginLeft:'70px',color:'white'}}>{name}</h3>
+            <div style={{marginLeft:'20px',marginTop:'20px'}}>
                 <Button href="/admin/patients" variant="primary" size="lg" className="m-3 w-75">
                     Patients
                 </Button><br/>
