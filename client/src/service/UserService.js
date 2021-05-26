@@ -14,4 +14,39 @@ const fetchOneUser = (email) => {
     })
 }
 
-export default {fetchOneUser}
+const updateUser = (email,updatedUser) => {
+    return axios.put(API_URL+`${email}`,updatedUser,{
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + user.jwtToken
+        }
+    })
+}
+
+const fetchAllUsers = () => {
+    return axios.get(API_URL,{
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + user.jwtToken
+        }
+    })
+}
+
+const deleteUser = (email) => {
+    return axios.delete(API_URL+`${email}`,{
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + user.jwtToken
+        }
+    })
+}
+
+const addUser = (newUser) => {
+    return axios.post(API_URL,newUser,{
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + user.jwtToken
+        }
+    })
+}
+export default {fetchOneUser,updateUser,fetchAllUsers,deleteUser,addUser}

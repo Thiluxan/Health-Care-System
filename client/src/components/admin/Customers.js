@@ -1,8 +1,12 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import AdminNavigation from '../nav/AdminNavigation'
 import LogoutHeader from '../nav/LogoutHeader'
 import {Form,Table,Button} from 'react-bootstrap'
 import authService from '../../authentication/auth-service'
+import UserService from '../../service/UserService'
+import { confirmAlert } from 'react-confirm-alert'; 
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import ReactPaginate from "react-paginate";
 
 export default function Customers() {
     const currentUser = authService.getCurrentUser()
@@ -10,18 +14,107 @@ export default function Customers() {
     const[name,setName] = useState('')
     const[email,setEmail] = useState('')
     const[searchEmail,setSearchEmail] = useState('')
-    const[password,setPassword] = useState('')
-    const[customerID,setCustomerID] = useState('')
+    const[phone,setPhone] = useState('')
+    const[users,setUsers] = useState([])
+    const[customer,setCustomer] = useState({})
+    const[currentPage,setCurrentPage] = useState(0)
 
-    const handleSubmit = (e) => {
+    const PER_PAGE = 6;
+
+    useEffect(() => {
+        UserService.fetchAllUsers()
+        .then(response => {
+            setUsers(response.data)
+        })
+        .catch(err => console.log(err))
+    },[])
+
+    const handleUpdate = (e) => {
         e.preventDefault()
-        console.log("Admins created")
+        const updatedUser = {
+            name,
+            email,
+            phone,
+            domain:"",
+            role:'CUSTOMER'
+        }
+        UserService.updateUser(email,updatedUser)
+        .then(response => {
+            alert('Customer updated')
+            setName('')
+            setEmail('')
+            setPhone('')
+            window.location.replace('/admin/patients')
+        })
+        .catch(err => {
+            console.log(err)
+            alert('An error occurred')
+        })
+    }
+
+    const handleDelete = e => {
+        e.preventDefault()
+        confirmAlert({
+            title:'Remove Customer',
+            message:'Are you sure want to remove customer',
+            buttons: [
+                {
+                  label: 'Yes',
+                  onClick: () => {
+                        UserService.deleteUser(email)
+                        .then(response => {
+                            alert('Removed successfully')
+                            setCustomer('')
+                            setName('')
+                            setEmail('')
+                            setPhone('')
+                            window.location.replace('/admin/patients')
+                        })
+                        .catch(err => {
+                            console.log(err)
+                            alert('Failed to Remove')
+                        })
+                  }
+                },
+                {
+                  label: 'No',
+                  onClick: () => {
+                      window.location.replace("/admin/patients")
+                  }
+                }
+              ]
+        })
+        
+        
     }
 
     const handleSearch = e => {
         e.preventDefault()
-        console.log("Search Function")
+        UserService.fetchOneUser(searchEmail)
+        .then(response => {
+            setCustomer(response.data)
+            setName(response.data.name)
+            setEmail(response.data.email)
+            setPhone(response.data.phone)
+        })
+        .catch(err => console.log(err))
     }
+
+    const handlePageClick =({ selected: selectedPage }) => {
+        setCurrentPage(selectedPage);
+    }
+    
+    const offset = currentPage * PER_PAGE;
+
+    const currentPageData =  users.filter(user => user.role === 'CUSTOMER')
+                                    .map(patient => (
+                                        <tr>
+                                            <td>{patient.name}</td>
+                                            <td>{patient.email}</td>
+                                            <td>{patient.phone}</td>
+                                        </tr>
+                                    ))
+    const pageCount = Math.ceil(users.filter(user => user.role === 'CUSTOMER').length / PER_PAGE);
 
     return (
         <>
@@ -46,17 +139,8 @@ export default function Customers() {
                                 Search
                             </Button>
                         </Form>
-                        <Form onSubmit={handleSubmit} className="form p-5" style={{marginLeft:'-20px',marginTop:'-70px'}}>
-                            <Form.Group controlId="formBasicCustomerID" className="formGroups">
-                                <Form.Control 
-                                    size="lg"
-                                    type="text" 
-                                    placeholder="CustomerID" 
-                                    value={customerID}
-                                    onChange = {(e) => setCustomerID(e.target.value)}
-                                    required/>
-                            </Form.Group>
-
+                        <Form className="form p-5" style={{marginLeft:'-20px',marginTop:'-70px'}}>
+                            
                             <Form.Group controlId="formBasicName" className="formGroups" >
                                 <Form.Control 
                                     size="lg"
@@ -77,20 +161,21 @@ export default function Customers() {
                                     required/>
                             </Form.Group>
 
-                            <Form.Group controlId="formBasicPassword" className="formGroups">
+                            <Form.Group controlId="formBasicPhone" className="formGroups">
                                 <Form.Control 
                                     size="lg"
-                                    type="password" 
-                                    placeholder="Change Password" 
-                                    value={password}
-                                    onChange = {(e) => setPassword(e.target.value)}
+                                    type="text" 
+                                    placeholder="Phone" 
+                                    value={phone}
+                                    onChange = {(e) => setPhone(e.target.value)}
                                     required/>
                             </Form.Group>
 
-                            <Button variant="success" type="submit" size="sm" style={{width:'100px',marginTop:'10px'}}>
+
+                            <Button variant="success" onClick={handleUpdate} size="sm" style={{width:'100px',marginTop:'10px'}}>
                                 Update
                             </Button>
-                            <Button variant="danger" type="submit" size="sm" style={{width:'100px',marginTop:'10px',marginLeft:'90px'}}>
+                            <Button variant="danger" onClick={handleDelete} size="sm" style={{width:'100px',marginTop:'10px',marginLeft:'90px'}}>
                                 Remove
                             </Button>
                         </Form>
@@ -100,19 +185,28 @@ export default function Customers() {
                         <Table striped bordered hover className="text-center" style={{marginTop:'20px',width:'550px'}}>
                             <thead>
                                 <tr>
-                                    <th>C_ID</th>
                                     <th>Name</th>
                                     <th>Email</th>
+                                    <th>Phone</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>001</td>
-                                    <td>Customer A</td>
-                                    <td>cusA@gmail.com</td>
-                                </tr>
+                                {
+                                    currentPageData
+                                }
                             </tbody>
                         </Table>
+                        <ReactPaginate
+                            previousLabel={"← Previous"}
+                            nextLabel={"Next →"}
+                            pageCount={pageCount}
+                            onPageChange={handlePageClick}
+                            containerClassName={"pagination"}
+                            previousLinkClassName={"pagination__link"}
+                            nextLinkClassName={"pagination__link"}
+                            disabledClassName={"pagination__link--disabled"}
+                            activeClassName={"pagination__link--active"}
+                        />
                     </div>
                 </div>
             </div>

@@ -32,8 +32,8 @@ const deleteAppointment = (receipt) => {
     })
 }
 
-const updateAppointment = (updatedAppointment) => {
-    return axios.put(API_URL,updatedAppointment,{
+const updateAppointment = (id,updatedAppointment) => {
+    return axios.put(API_URL+`${id}`,updatedAppointment,{
         headers:{
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + user.jwtToken
@@ -50,4 +50,13 @@ const fetchAppointmentsByEmail = (email) => {
     })
 }
 
-export default {fetchAppointments,addAppointment,deleteAppointment,updateAppointment,fetchAppointmentsByEmail}
+const fetchAppointmentById = (id) => {
+    return axios.get(API_URL+`${id}`,{
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + user.jwtToken
+        }
+    })
+}
+
+export default {fetchAppointments,addAppointment,deleteAppointment,updateAppointment,fetchAppointmentsByEmail,fetchAppointmentById}

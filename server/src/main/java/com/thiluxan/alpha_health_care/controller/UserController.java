@@ -14,6 +14,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @CrossOrigin
 public class UserController {
@@ -50,14 +53,31 @@ public class UserController {
         userService.saveUser(user);
     }
 
+    @PostMapping("/users")
+    public void addUser(@RequestBody User user){
+        userService.saveUser(user);
+    }
+
+    @GetMapping("/users")
+    public List<PublicUser> getAllUsers(){
+        List<User> users = userService.getAllUsers();
+        List<PublicUser> publicUsers = new ArrayList<>();
+        for(int i=0;i<users.size();i++){
+            User tempUser = users.get(i);
+            publicUsers.add(new PublicUser(tempUser.getName(),tempUser.getEmail(),tempUser.getPhone(),tempUser.getDomain(),tempUser.getRole()));
+        }
+        return publicUsers;
+    }
+
     @GetMapping("/users/{email}")
     public PublicUser getUser(@PathVariable String email){
         User user = userService.getUser(email);
-        return new PublicUser(user.getName(),user.getEmail(),user.getPhone(),user.getDomain());
+        return new PublicUser(user.getName(),user.getEmail(),user.getPhone(),user.getDomain(),user.getRole());
     }
 
     @PutMapping("/users/{email}")
     public void updateUser(@RequestBody PublicUser publicUser,@PathVariable String email){
+        System.out.println(publicUser);
         userService.updateUser(publicUser);
     }
 

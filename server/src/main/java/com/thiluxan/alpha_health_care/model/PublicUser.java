@@ -6,15 +6,25 @@ public class PublicUser {
     private String email;
     private int phone;
     private String domain;
+    public String role;
 
     public PublicUser() {
     }
 
-    public PublicUser(String name, String email, int phone, String domain) {
+    public PublicUser(String name, String email, int phone, String domain,String role) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.domain = domain;
+        this.role = role;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getName() {

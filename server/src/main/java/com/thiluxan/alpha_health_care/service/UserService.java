@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -37,12 +38,16 @@ public class UserService implements UserDetailsService {
         userRepo.save(user);
     }
 
+    public List<User> getAllUsers(){
+        return userRepo.findAll();
+    }
+
     public User getUser(String email){
         return userRepo.findUserByEmail(email);
     }
 
     public void deleteUser(String email){
-        userRepo.deleteByEmail(email);
+        userRepo.deleteUserByEmail(email);
     }
 
     public void updateUser(PublicUser publicUser){

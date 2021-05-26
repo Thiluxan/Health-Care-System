@@ -1,12 +1,102 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import AdminNavigation from '../nav/AdminNavigation'
 import LogoutHeader from '../nav/LogoutHeader'
 import {Table,Button} from 'react-bootstrap'
 import authService from '../../authentication/auth-service'
+import DoctorService from '../../service/DoctorService'
+import { confirmAlert } from 'react-confirm-alert'; 
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import ReactPaginate from "react-paginate";
 
 export default function DoctorVisits() {
     const currentUser = authService.getCurrentUser()
-   console.log(currentUser.jwtToken)
+    
+    const [doctorVisits,setDoctorVisits] = useState([])
+    const[currentPage,setCurrentPage] = useState(0)
+
+    const PER_PAGE = 5;
+
+    useEffect(() => {
+        DoctorService.fetchAllDoctorVisits()
+        .then(response => {
+            setDoctorVisits(response.data)
+        })
+        .catch(err => console.log(err))
+    },[])
+
+    const handleCancel = (id) => {
+        confirmAlert({
+            title:'Cancel Doctor Visit',
+            message:'Are you sure want to cancel Doctor visit',
+            buttons: [
+                {
+                  label: 'Yes',
+                  onClick: () => {
+                        DoctorService.cancelDoctorVist(id)
+                        .then(res => {
+                            alert('Cancelled successfully')
+                            window.location.replace('/admin/doctorVisits')
+                        })
+                        .catch(err => {
+                            console.log(err)
+                            alert('An error occurred')
+                        })
+                  }
+                },
+                {
+                  label: 'No',
+                  onClick: () => {
+                      window.location.replace("/admin/doctorVisits")
+                  }
+                }
+              ]
+        })
+        
+    }
+
+    const handleComplete = (doctorVisit) => {
+        const updatedDoctorVisit = {
+            email:doctorVisit.email,
+            name:doctorVisit.name,
+            domain:doctorVisit.domain,
+            date:doctorVisit.date,
+            time:doctorVisit.time,
+            fees:doctorVisit.fees,
+            totalPatients:doctorVisit.totalPatients,
+            booking:doctorVisit.booking,
+            status:'CLOSED'
+        }
+        DoctorService.updateDoctorVisit(doctorVisit.id,updatedDoctorVisit)
+        .then(res => {
+            alert('Completed successfully')
+            window.location.replace("/admin/doctorVisits")
+        })
+        .catch(err => {
+            console.log(err)
+            alert('An error occurred')
+        })
+    }
+
+    const handlePageClick =({ selected: selectedPage }) => {
+        setCurrentPage(selectedPage);
+    }
+    
+    const offset = currentPage * PER_PAGE;
+
+    const currentPageData = doctorVisits.filter(visit => visit.status === 'OPEN')
+                                        .map(doctorVisit => (
+                                            <tr key={doctorVisit.id}>
+                                                <td>{doctorVisit.name}</td>
+                                                <td>{doctorVisit.date}</td>
+                                                <td>{doctorVisit.time}</td>
+                                                <td>{doctorVisit.totalPatients}</td>
+                                                <td>{doctorVisit.booking}</td>
+                                                <td>{doctorVisit.fees}</td>
+                                                <td><Button variant="danger" onClick={() => handleCancel(doctorVisit.id)}>Cancel</Button></td>
+                                                <td><Button variant="success" onClick={() => handleComplete(doctorVisit)}>Complete</Button></td>
+                                            </tr>
+                                        )).reverse()
+    const pageCount = Math.ceil(doctorVisits.length / PER_PAGE);
     return (
         <>
             <div style={{float:'left'}}>
@@ -22,42 +112,28 @@ export default function DoctorVisits() {
                                 <th>Doctor</th>
                                 <th>Date</th>
                                 <th>Time</th>
-                                <th>Patients</th>
+                                <th>Total</th>
+                                <th>Bookings</th>
                                 <th>Fees</th>
                                 <th></th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Dr.Doctor A</td>
-                                <td>01.01.2021</td>
-                                <td>00.00</td>
-                                <td>25</td>
-                                <td>LKR 1500</td>
-                                <td><Button variant="success">Complete</Button></td>
-                                <td><Button variant="danger">Cancel</Button></td>
-                            </tr>
-                            <tr>
-                                <td>Dr.Doctor A</td>
-                                <td>01.01.2021</td>
-                                <td>00.00</td>
-                                <td>25</td>
-                                <td>LKR 1500</td>
-                                <td><Button variant="success">Complete</Button></td>
-                                <td><Button variant="danger">Cancel</Button></td>
-                            </tr>
-                            <tr>
-                                <td>Dr.Doctor A</td>
-                                <td>01.01.2021</td>
-                                <td>00.00</td>
-                                <td>25</td>
-                                <td>LKR 1500</td>
-                                <td><Button variant="success">Complete</Button></td>
-                                <td><Button variant="danger">Cancel</Button></td>
-                            </tr>
+                            {currentPageData}
                         </tbody>
                         </Table>
+                        <ReactPaginate
+                            previousLabel={"← Previous"}
+                            nextLabel={"Next →"}
+                            pageCount={pageCount}
+                            onPageChange={handlePageClick}
+                            containerClassName={"pagination"}
+                            previousLinkClassName={"pagination__link"}
+                            nextLinkClassName={"pagination__link"}
+                            disabledClassName={"pagination__link--disabled"}
+                            activeClassName={"pagination__link--active"}
+                        />
                     </div>
             </div>
         </>
